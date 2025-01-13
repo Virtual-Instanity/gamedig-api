@@ -1,6 +1,10 @@
 # GameDig API
 A very simple API for querying game server information using [GameDig](https://www.npmjs.com/package/gamedig) and [Bun](https://bun.sh).
 
+## Supported games
+
+A full list of supported games and their unique identifiers can be found in the [GameDig documentation](https://github.com/gamedig/node-gamedig#games-list).
+
 ## Requirements
 
 [Bun](https://bun.sh) installed on your system.
@@ -61,6 +65,9 @@ curl -X POST http://127.0.0.1:3000/api/query \
   -H "Content-Type: application/json" \
   -d '{"type": "counterstrike16", "host": "127.0.0.1", "port": 27015}'
 ```
+
+Other examples:
+- [Using C#](examples/example-csharp.md)
 
 Example JSON Response:
 ```json
