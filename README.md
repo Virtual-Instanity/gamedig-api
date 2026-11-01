@@ -36,6 +36,18 @@ Run dev
 bun run dev
 ```
 
+## Run in Docker
+
+Build and start the container (in background):
+```sh
+docker compose up -d --build
+```
+
+The container reads `API_TOKEN` and `APP_PORT` from the same `.env` file (or from system environment variables). Without `APP_PORT` the server uses port 3000. Stop with:
+```sh
+docker compose down
+```
+
 ## Environment Variables
 
 You can configure the environment variables in two ways:
@@ -46,17 +58,21 @@ You can configure the environment variables in two ways:
 2. Set the required variables directly in your system's environment.
 
 
-### Required variables 
+### Variables
 
-- `API_TOKEN`: Secret token for authenticating API requests.
-- `APP_PORT`: The port on which the API will run.
+- `API_TOKEN`: Secret token for authenticating API requests. **Required.**
+- `APP_PORT`: The port on which the API will run. Default: `3000`.
+- `RATE_LIMIT_MAX`: Max requests per IP per window. Default: `30`.
+- `RATE_LIMIT_WINDOW_SEC`: Rate limit window length, seconds. Default: `60`.
+- `MAX_CONCURRENT_QUERIES`: Max simultaneous game server queries. Default: `5`.
 
 ## API
 
 ### 1. **POST `/api/query`**
 
 - **Bearer Token**: a required in header for API authentication.
-- **Content-Type**: the request must have the type `application/json`.
+- **Content-Type**: the request must have the type `application/json`. Invalid bodies return `422` with validation details.
+- **Rate limiting**: requests are limited per client IP (`RATE_LIMIT_MAX` per `RATE_LIMIT_WINDOW_SEC`), implemented with [elysia-rate-limit](https://github.com/rayriffy/elysia-rate-limit). Exceeding the limit returns `429` with `Retry-After` and standardized `RateLimit-*` headers. This also applies to requests with an invalid token, and no more than `MAX_CONCURRENT_QUERIES` game server queries run at the same time — extra requests get `429`. Request bodies larger than 64 KB are rejected with `413`.
 
 Example query:
 ```sh
