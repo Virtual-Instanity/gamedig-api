@@ -1,0 +1,14 @@
+services:
+  gamedig-api:
+    build: .
+    image: gamedig-api:latest
+    container_name: gamedig-api
+    restart: unless-stopped
+    ports:
+      - "${APP_PORT:-3000}:${APP_PORT:-3000}"
+    environment:
+      API_TOKEN: ${API_TOKEN:?API_TOKEN is required - set it in .env or your environment}
+      APP_PORT: ${APP_PORT:-3000}
+      RATE_LIMIT_MAX: ${RATE_LIMIT_MAX:-30}
+      RATE_LIMIT_WINDOW_SEC: ${RATE_LIMIT_WINDOW_SEC:-60}
+      MAX_CONCURRENT_QUERIES: ${MAX_CONCURRENT_QUERIES:-5}
