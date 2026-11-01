@@ -3,19 +3,21 @@
   "scripts": {
     "dev": "bun run --hot src/app.ts",
     "start": "bun run src/app.ts",
+    "typecheck": "tsc --noEmit",
     "build:linux": "bun build --compile --target=bun-linux-x64 src/app.ts --outfile gamedig-api",
     "build:windows": "bun build --compile --minify --sourcemap --target=bun-windows-x64 src/app.ts --outfile gamedig-api",
     "build:mac:x64": "bun build --compile --target=bun-darwin-x64 src/app.ts --outfile gamedig-api",
     "build:mac:arm": "bun build --compile --target=bun-darwin-arm64 src/app.ts --outfile gamedig-api"
   },
   "dependencies": {
-    "@hono/zod-validator": "^0.4.2",
-    "gamedig": "^5.1.4",
-    "hono": "^4.6.16",
-    "zod": "^3.24.1"
+    "@sinclair/typebox": "^0.34.52",
+    "elysia": "^1.4.30",
+    "elysia-rate-limit": "^4",
+    "gamedig": "^5.1.4"
   },
   "devDependencies": {
     "@types/bun": "latest",
-    "@types/gamedig": "^5.0.3"
+    "@types/gamedig": "^5.0.3",
+    "typescript": "^5"
   }
 }
